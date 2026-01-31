@@ -1,0 +1,59 @@
+name: unitus
+description: "Unitus - ClickUp-like task management platform built with Flutter and Go."
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management & Dependency Injection
+  riverpod: ^2.4.0
+  flutter_riverpod: ^2.4.0
+  
+  # HTTP & Networking
+  dio: ^5.3.0
+  connectivity_plus: ^5.0.0
+  
+  # Data Serialization
+  freezed_annotation: ^2.4.1
+  json_serializable: ^6.7.1
+  
+  # Local Storage
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.1
+  
+  # Routing & Navigation
+  go_router: ^10.0.0
+  
+  # UI & Design
+  flutter_animate: ^4.1.1
+  gap: ^3.0.1
+  intl: ^0.19.0
+  uuid: ^4.0.0
+  
+  # Date & Time
+  timeago: ^3.5.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.6
+  freezed: ^2.4.1
+  custom_lint: ^0.5.7
+
+flutter:
+  uses-material-design: true
+
+  # Assets
+  assets:
+    - assets/icons/
+    - assets/images/
+    - assets/animations/

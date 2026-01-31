@@ -1,0 +1,100 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+pubspec.lock
+*.apk
+*.ipa
+*.app
+*.exe
+*.elf
+*.dmg
+*.zip
+*.tar.gz
+
+# Go
+*.go.out
+*.go.sum.bak
+go.sum
+vendor/
+dist/
+bin/
+/tmp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.iml
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.log
+postgres_data/
+redis_data/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+.#*
+
+# Dependencies
+node_modules/
+.gradle/
+.m2/
+
+# Build artifacts
+dist/
+build/
+out/
+.gradle/
+*.egg-info/
+*.pot
+
+# Coverage reports
+.coverage
+htmlcov/
+.pytest_cache/
+coverage.out
+
+# Documentation
+docs/build/
+docs/_build/
+
+# Misc
+.venv/
+ENV/
+env/
+venv/

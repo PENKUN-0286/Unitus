@@ -1,0 +1,106 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: unitus-postgres
+    environment:
+      POSTGRES_DB: unitus
+      POSTGRES_USER: unitus
+      POSTGRES_PASSWORD: password
+      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U unitus"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - unitus-network
+
+  # Redis Cache & Session Store
+  redis:
+    image: redis:7-alpine
+    container_name: unitus-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - unitus-network
+
+  # Go Backend Server
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: unitus-server
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: "8080"
+      ENVIRONMENT: development
+      DATABASE_URL: postgresql://unitus:password@postgres:5432/unitus
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: dev-secret-key-change-in-production
+      LOG_LEVEL: debug
+      CORS_ORIGINS: "http://localhost:5173,http://localhost:3000,http://localhost:*"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./server:/app
+      - /app/vendor
+    networks:
+      - unitus-network
+    restart: unless-stopped
+
+  # PgAdmin (Optional - for database management)
+  # Disabled due to port conflicts - enable if needed by uncommenting
+  # pgadmin:
+  #   image: dpage/pgadmin4:latest
+  #   container_name: unitus-pgadmin
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: admin@unitus.local
+  #     PGADMIN_DEFAULT_PASSWORD: password
+  #   ports:
+  #     - "5050:80"
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     - unitus-network
+  #   restart: unless-stopped
+
+  # Redis Commander (Optional - for Redis management)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: unitus-redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - unitus-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  unitus-network:
+    driver: bridge
